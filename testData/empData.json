@@ -1,0 +1,10 @@
+[{
+  "description": "This is a test data End to End flow for OPENHRM",
+  "firstName": "Automation",
+  "middleName": "Playwright",
+  "lastName": "Candidate",
+  "jobTitle": "IT Manager",
+  "employmentStatus": "Full-Time Permanent",
+  "profilePicture": "testData/TestImage.png"
+}
+]
