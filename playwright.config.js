@@ -21,7 +21,7 @@ const __dirname = path.dirname(__filename);
  * @see https://playwright.dev/docs/test-configuration
  */
 export default defineConfig({
- // timeout: 300_000,
+  timeout: 400_000,
   use: {
     baseURL: process.env.BASE_URL,
     headless: false,

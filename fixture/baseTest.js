@@ -24,9 +24,14 @@ export const test = base.extend({
             browser,
             page,
             context,
+            pimPage: poManager.getPIMPage(),
             poManager,
             loginPage: poManager.getLoginPage(),
-            homePage: poManager.getHomePage()
+            homePage: poManager.getHomePage(),
+            dashboardPage: poManager.getDashboardPage(),
+            addEmployeePage: poManager.getAddEmployeePage(),
+            employeeDetailsPage: poManager.getEmployeeDetailsPage(),
+            employeeListPage: poManager.getEmployeeListPage()
         });
         await context.close();
     }
