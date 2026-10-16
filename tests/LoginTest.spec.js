@@ -15,22 +15,26 @@ for (const data of filteredEmpData) {
          * @page: {import('@playwright/test').Page}
          * @context: {import('@playwright/test').BrowserContext}
          * loginPage: {import('../pageObject/LoginPage.js').LoginPage}
-         * homePage: {import('../pageObject/HomePage.js').HomePage}
          * poManager: {import('../pageObject/POManager.js').POManager}
-         *
          */
 
-        const {page, poManager, loginPage, homePage, addEmployeePage, dashboardPage,employeeListPage, pimPage, employeeDetailsPage} = openHRM;
+        const {
+            page,
+            loginPage,
+            addEmployeePage,
+            dashboardPage,
+            employeeListPage,
+            pimPage,
+            employeeDetailsPage
+        } = openHRM;
 
         await loginPage.launchApplicaiton();
         await loginPage.login(config.credentials.username, config.credentials.password);
-        // await homePage.verifyLoginSuccess();
         await expect(page).toHaveURL(/\/web\/index\.php\/dashboard\/index$/);
-        // here we need to create one emp code for use
         await dashboardPage.openPIM();
         await pimPage.openAddEmployee();
+        //Random Emplyoee id
         const employeeID = `Auto${Math.floor(1000 + Math.random() * 10000)}`;
-
         await addEmployeePage.createEmployee(data.firstName, data.middleName, data.lastName, data.jobTitle, data.employmentStatus, data.profilePicture, employeeID);
         let empNumber = await addEmployeePage.getEmployeeNumberFromUrl();
         await expect(addEmployeePage.employeeIdInput).toHaveValue(employeeID);
@@ -39,8 +43,6 @@ for (const data of filteredEmpData) {
         await employeeListPage.openEmployee(employeeID);
         await employeeDetailsPage.updateJobInformation(data.jobTitle, data.employmentStatus);
         await employeeDetailsPage.expectJobInformationVisible(data.jobTitle, data.employmentStatus);
-        //  const response = await employeeApi.getEmployee(empNumber);
-        // const body = await logApiResponse('Employee API response', response);
         // API validation: Get employee details
         const apiRequest = page.context().request;
         const response = await apiRequest.get(`${config.baseURL}/web/index.php/api/v2/pim/employees/${empNumber}`,
@@ -76,6 +78,7 @@ for (const data of filteredEmpData) {
         await dashboardPage.openPIM();
         await pimPage.openEmployeeList();
         await employeeListPage.deleteEmployee(employeeID);
+        //Pull API call call after Delete
         const deletedResponse = await page.context().request.get(`${config.baseURL}/web/index.php/api/v2/pim/employees/${empNumber}`,
             {
                 headers: {Accept: 'application/json'}
