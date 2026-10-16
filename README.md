@@ -30,18 +30,37 @@ The application configuration loads these values from `.env` and exits with an e
 
 ## Framework structure
 
-| Path | Purpose |
-| --- | --- |
-| `tests/` | Playwright test specifications. `LoginTest.spec.js` contains the end-to-end employee-management flow. |
-| `pageObject/` | Page Object Model classes for login, dashboard, PIM, and employee pages; `POManager.js` provides access to them. |
-| `fixture/` | Custom Playwright fixture that creates the page and exposes the page objects to tests. |
-| `api/` | Employee API client helpers for retrieving employee and job details. |
-| `testData/` | JSON test data and assets, including the employee profile image. |
-| `utils/` | Environment loading and application configuration. |
-| `playwright.config.js` | Test discovery, Chromium project, browser settings, retries, and HTML reporter configuration. |
-| `.github/workflows/` | GitHub Actions workflow configuration. |
+```text
+.
+├── api/
+│   └── EmployeeApiClient.js       # Employee and job-details API helper
+├── fixture/
+│   └── baseTest.js                # Custom openHRM fixture and shared expect
+├── pageObject/
+│   ├── AddEmployeePage.js
+│   ├── DashboardPage.js
+│   ├── EmployeeDetailsPage.js
+│   ├── EmployeeListPage.js
+│   ├── LoginPage.js
+│   ├── PIMPage.js
+│   └── POManager.js               # Creates and exposes page objects
+├── testData/
+│   ├── empData.json               # Employee scenario data
+│   └── TestImage.png              # Profile image used by the scenario
+├── tests/
+│   └── LoginTest.spec.js          # End-to-end employee lifecycle test
+├── utils/
+│   ├── config.js                  # Validated application URL and credentials
+│   └── env.js                     # Loads required values from the root .env
+├── .github/
+│   └── workflows/
+│       └── playwright.yml         # GitHub Actions workflow
+├── playwright.config.js           # Playwright test runner configuration
+├── package.json                   # Project metadata and dependencies
+└── package-lock.json              # Locked npm dependency versions
+```
 
-The project uses JavaScript ES modules. Tests are discovered under `tests/`; Playwright is configured to run them in Chromium in headed mode and generate an HTML report.
+The project uses JavaScript ES modules. Playwright discovers tests in `tests/` and runs the configured Chromium project in headed mode with the HTML reporter. `LoginTest.spec.js` makes its employee API checks directly through Playwright's request context; `api/EmployeeApiClient.js` contains a separate reusable API helper.
 
 ## Run the tests
 
